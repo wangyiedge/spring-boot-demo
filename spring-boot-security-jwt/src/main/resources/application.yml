@@ -1,0 +1,61 @@
+server:
+  port: 9001
+#####################################################################################
+#
+# spring  datasource
+#
+#####################################################################################
+spring:
+  application:
+    name: SPRING-BOOT-SECURITY-JWT
+  datasource: ##jdbc_config
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:postgresql://localhost:5432/edge?characterEncoding=utf8
+    username: postgres
+    password: postgres
+#####################################################################################
+#
+# JWT
+#
+#####################################################################################
+jwt:
+  # 密匙
+  secret: JWTSecret
+  # HeaderKEY
+  tokenHeader: Authorization
+  # Token前缀字符
+  tokenPrefix: 'Bearer '
+  # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
+  expiration: 86400
+  # 配置不需要认证的接口
+  antMatchers: /login/**,/security/**
+#####################################################################################
+#
+# mybatis-plus
+#
+#####################################################################################
+mybatis-plus:
+  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations: classpath:mapper/*.xml
+  # 以下配置均有默认值,可以不设置
+  global-config:
+    db-config:
+      #主键类型 AUTO:"数据库ID自增" INPUT:"用户输入ID",ASSIGN_ID:"全局唯一ID 默认雪花ID", ASSIGN_UUID:"全局唯一ID UUID";
+      id-type: ASSIGN_ID
+      #字段策略 默认NOT_NULL:"非 NULL 判断"  NOT_EMPTY:"非空判断"  IGNORED:"忽略判断，"
+      insert-strategy: NOT_EMPTY
+      update-strategy: NOT_EMPTY
+      select-strategy: NOT_EMPTY
+      # 数据库表名是否是下划线
+      table-underline: true
+  # 继承mybatis配置
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 返回map时true:当查询数据为空时字段返回为null,false:不加这个查询数据为空时，字段将被隐藏
+    call-setters-on-nulls: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 允许缓存
+    cache-enabled: false
